@@ -75,14 +75,14 @@ class NotesPanel extends Control implements IDebugPanel {
 	}
 
 	/**
-	 * @see IDebugPanel#getId()
+	 * @see IDebugPanel::getId()
 	 */
 	public function getId() {
 		return __CLASS__;
 	}
 
 	/**
-	 * @see IDebugPanel#getPanel()
+	 * @see IDebugPanel::getPanel()
 	 */
 	public function getPanel() {
 		$template = $this->createTemplate();
@@ -102,7 +102,7 @@ class NotesPanel extends Control implements IDebugPanel {
 	}
 
 	/**
-	 * @see IDebugPanel#getTab()
+	 * @see IDebugPanel::getTab()
 	 */
 	public function getTab() {
 		$template = $this->createTemplate();

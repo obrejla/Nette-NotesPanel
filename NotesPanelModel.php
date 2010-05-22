@@ -25,6 +25,9 @@ class NotesPanelModel implements INotesPanelModel {
 		//$this->cache = Environment::getCache(self::CACHE_NAMESPACE);
 	}
 
+	/**
+	 * @see INotesPanelModel::add($pageId, $description)
+	 */
 	public function add($pageId, $description) {
 		$this->db->insert('notes', array(
 			'page_id' => $pageId,
@@ -36,6 +39,9 @@ class NotesPanelModel implements INotesPanelModel {
 		));*/
 	}
 
+	/**
+	 * @see INotesPanelModel::get($pageId)
+	 */
 	public function get($pageId = NULL) {
 		if (is_null($pageId)) {
 			/*
@@ -54,7 +60,10 @@ class NotesPanelModel implements INotesPanelModel {
 			return $this->db->select('id, description')->from('notes')->where('page_id LIKE %s', $pageId)->fetchAll();
 		}
 	}
-	
+
+	/**
+	 * @see INotesPanelModel::delete($noteId)
+	 */
 	public function delete($noteId = NULL) {
 		if (is_null($noteId)) {
 			$this->db->delete('notes')->execute();
@@ -64,6 +73,9 @@ class NotesPanelModel implements INotesPanelModel {
 
 	}
 
+	/**
+	 * @see INotesPanelModel::getCount($pageId)
+	 */
 	public function getCount($pageId = NULL) {
 		$fluent = $this->db->select('COUNT(*)')->from('notes');
 		
