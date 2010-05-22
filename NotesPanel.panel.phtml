@@ -1,0 +1,195 @@
+{*
+
+/**
+ * Copyright (c) 2010 Ondřej Brejla <ondrej@brejla.cz>
+ *
+ * Permission is hereby granted, free of charge, to any person
+ * obtaining a copy of this software and associated documentation
+ * files (the "Software"), to deal in the Software without
+ * restriction, including without limitation the rights to use,
+ * copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the
+ * Software is furnished to do so, subject to the following
+ * conditions:
+ *
+ * The above copyright notice and this permission notice shall be
+ * included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ * HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ * WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ * FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ * OTHER DEALINGS IN THE SOFTWARE.
+ */
+
+*}
+
+<style type="text/css">
+	#nette-debug-NotesPanel img {
+		vertical-align: text-bottom;
+	}
+
+	#nette-debug-NotesPanel textarea {
+		border: 1px solid #DCD7C8;
+	}
+
+	#nette-debug-NotesPanel .button {
+		border: 1px solid #DCD7C8;
+		font-weight: bold;
+		background: #f0eee6;
+		color: #655e5e;
+		padding: 5px;
+	}
+
+	#nette-debug-NotesPanel #insertForm div {
+		margin: 5px;
+	}
+
+	#nette-debug-NotesPanel ul, ol {
+		margin-left: 20px;
+	}
+</style>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+	$('#allNotes').hide();
+	$('#insertForm').hide();
+	$('#showCurrentLink').hide();
+});
+</script>
+
+<div id="notesPanel">
+	<h1>Notes</h1>
+		<div id="currentNotes">
+		{if count($currentNotes)}
+		<table>
+			<thead>
+				<tr>
+					<th>Description</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach $currentNotes as $note}
+				<tr>
+					<td>{if $isTexy}{!$note['description']|texy}{else}{!$note['description']}{/if}</td>
+					<td><a href="{link delete! $note['id']}" onclick="javascript:if (confirm('Are you sure you want to delete this note?')) { this.submit(); } else { return false; }">Delete</a></td>
+				</tr>
+				{/foreach}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>&nbsp</td>
+					<td><a href="{link delete!}" onclick="javascript:if (confirm('Are you sure you want to delete ALL notes?')) { this.submit(); } else { return false; }"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
+		U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJdSURBVDjLpZP7S1NhGMf9W7YfogSJboSE
+		UVCY8zJ31trcps6zTI9bLGJpjp1hmkGNxVz4Q6ildtXKXzJNbJRaRmrXoeWx8tJOTWptnrNryre5
+		YCYuI3rh+8vL+/m8PA/PkwIg5X+y5mJWrxfOUBXm91QZM6UluUmthntHqplxUml2lciF6wrmdHri
+		I0Wx3xw2hAediLwZRWRkCPzdDswaSvGqkGCfq8VEUsEyPF1O8Qu3O7A09RbRvjuIttsRbT6HHzeb
+		sDjcB4/JgFFlNv9MnkmsEszodIIY7Oaut2OJcSF68Qx8dgv8tmqEL1gQaaARtp5A+N4NzB0lMXxo
+		n/uxbI8gIYjB9HytGYuusfiPIQcN71kjgnW6VeFOkgh3XcHLvAwMSDPohOADdYQJdF1FtLMZPmsl
+		vhZJk2ahkgRvq4HHUoWHRDqTEDDl2mDkfheiDgt8pw340/EocuClCuFvboQzb0cwIZgki4KhzlaE
+		6w0InipbVzBfqoK/qRH94i0rgokSFeO11iBkp8EdV8cfJo0yD75aE2ZNRvSJ0lZKcBXLaUYmQrCz
+		DT6tDN5SyRqYlWeDLZAg0H4JQ+Jt6M3atNLE10VSwQsN4Z6r0CBwqzXesHmV+BeoyAUri8EyMfi2
+		FowXS5dhd7doo2DVII0V5BAjigP89GEVAtda8b2ehodU4rNaAW+dGfzlFkyo89GTlcrHYCLpKD+V
+		7yeeHNzLjkp24Uu1Ed6G8/F8qjqGRzlbl2H2dzjpMg1KdwsHxOlmJ7GTeZC/nesXbeZ6c9OYnuxU
+		c3fmBuFft/Ff8xMd0s65SXIb/gAAAABJRU5ErkJggg==" title="Delete all" />&nbsp;Delete&nbsp;all</a></td>
+				</tr>
+			</tfoot>
+		</table>
+		{else}
+		No notes for this page.
+		{/if}
+		</div>
+
+		<div id="allNotes">
+		{if count($allNotes)}
+		<table>
+			<thead>
+				<tr>
+					<th>Page</th>
+					<th>Description</th>
+					<th>Action</th>
+				</tr>
+			</thead>
+			<tbody>
+				{foreach $allNotes as $note}
+				<tr>
+					<td><a href="{$note['page_id']}" title="{$note['page_id']}">link</a></td>
+					<td>{if $isTexy}{!$note['description']|texy}{else}{!$note['description']}{/if}</td>
+					<td><a href="{link delete! $note['id']}" onclick="javascript:if (confirm('Are you sure you want to delete this note?')) { this.submit(); } else { return false; }">Delete</a></td>
+				</tr>
+				{/foreach}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td>&nbsp</td>
+					<td>&nbsp</td>
+					<td><a href="{link delete!}" onclick="javascript:if (confirm('Are you sure you want to delete ALL notes?')) { this.submit(); } else { return false; }"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
+		U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAJdSURBVDjLpZP7S1NhGMf9W7YfogSJboSE
+		UVCY8zJ31trcps6zTI9bLGJpjp1hmkGNxVz4Q6ildtXKXzJNbJRaRmrXoeWx8tJOTWptnrNryre5
+		YCYuI3rh+8vL+/m8PA/PkwIg5X+y5mJWrxfOUBXm91QZM6UluUmthntHqplxUml2lciF6wrmdHri
+		I0Wx3xw2hAediLwZRWRkCPzdDswaSvGqkGCfq8VEUsEyPF1O8Qu3O7A09RbRvjuIttsRbT6HHzeb
+		sDjcB4/JgFFlNv9MnkmsEszodIIY7Oaut2OJcSF68Qx8dgv8tmqEL1gQaaARtp5A+N4NzB0lMXxo
+		n/uxbI8gIYjB9HytGYuusfiPIQcN71kjgnW6VeFOkgh3XcHLvAwMSDPohOADdYQJdF1FtLMZPmsl
+		vhZJk2ahkgRvq4HHUoWHRDqTEDDl2mDkfheiDgt8pw340/EocuClCuFvboQzb0cwIZgki4KhzlaE
+		6w0InipbVzBfqoK/qRH94i0rgokSFeO11iBkp8EdV8cfJo0yD75aE2ZNRvSJ0lZKcBXLaUYmQrCz
+		DT6tDN5SyRqYlWeDLZAg0H4JQ+Jt6M3atNLE10VSwQsN4Z6r0CBwqzXesHmV+BeoyAUri8EyMfi2
+		FowXS5dhd7doo2DVII0V5BAjigP89GEVAtda8b2ehodU4rNaAW+dGfzlFkyo89GTlcrHYCLpKD+V
+		7yeeHNzLjkp24Uu1Ed6G8/F8qjqGRzlbl2H2dzjpMg1KdwsHxOlmJ7GTeZC/nesXbeZ6c9OYnuxU
+		c3fmBuFft/Ff8xMd0s65SXIb/gAAAABJRU5ErkJggg==" title="Delete all" />&nbsp;Delete&nbsp;all</a></td>
+				</tr>
+			</tfoot>
+		</table>
+		{else}
+		No notes for this web.
+		{/if}
+		</div>
+
+		<div>
+		Actions:&nbsp;
+		<a href="#" onclick="$('#insertForm').slideDown();$(this).hide()" id="addLink"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
+U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAITSURBVDjLpZNNSJRBGMd/s7q50ZoWISZS
+RAgF5VpELFJ0CK9RneokEl1qO3URpFNCXqIO0aFLEF0iiAj6JBB0WYwOoikRJiXUYqbsumv7zvu+
+M/N02BV30YPgc5h5GPh/zMz/USLCVirCFqt+tZGfb8UUFxEJEBMiNkRMgBgfsT6EGms0YjwINU0X
+n6haAmuIHrm0TkEEFFQWQCD3/PJ6B37+N9tFEOeVDxSIOEAhrDGoSAMSehtcwRhcMI8pfgLnIxKU
+dxeA04jTiPPYtucCLixtQGB9wCBOg4QVUDVYI64EYpBgAwdmZalsuUbZwzldIfHAeWUR8289gbMa
+PTOK8b+DDUAMVheI7W8pKzuNWA/E1byBWg3S4oteibZ0EO86DzhcMEdx/BkN+3aBlBie1YzMOZY9
+j6CU489K/tabOxOD9VVMhAuT5D6m2dl9FaUUTkKQEu+/FZny45w5fYL23R0MT79kbGr0djLV1hyp
+/u/Gk72E+b/kR+5VwBqxmtdfc3QdSmAjlsTeHqwKSR7tBri+FmWjUXURdhy/gphmiplX1MUSxFr7
+WCgsEVVxzh2+AcDNs4842NIJEKvKgSb37j5iNBJ6BN4XmM1Q+vyUQiFgOpthIpumv+cxQx/6iNU1
+AGi1mWlMptoG2w80DXR3nqKj9Rgz8+NkJtP8+rF8V212nJOptiHgGtAIFIGHYw+y/f8B3ntD1Kp2
+NbQAAAAASUVORK5CYII=" title="Add note" />&nbsp;Add&nbsp;note</a>&nbsp;&nbsp;
+		<a href="#" onclick="$('#showCurrentLink').show();$('#allNotes').show();$('#currentNotes').hide();$(this).hide();" id="showAllLink"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
+U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAInSURBVDjLpZNBSJRBFMd/37papinFUgZm
+YESIFiGRYdQhynueig4eomNE0NmDidc8du7arUNFKJSpIKQHAwlNKkUzTVdd3W++mTfzOuxK2RoE
+zeENPHi//3/mvRepKv9z0gD65aVK7geqFhWHeoeKRSVBfQLO4MWgEoMz1HY+jXYDvFDecrOErgoR
+FAOgkH12q9RBsr5ApSoa4kI2AtUARCi/CFFqH+riPZ4gQrBLSG4MQoKqLdzBQjBoMGiIqcjcILj8
+HgCfAIIGA+qKRb8XGzTkQQW1eziQrdWC5V3KMSGYIiSGEBdEZLsUELzBzLxDkk/gLajgzSb7Txwp
+KAdDz8QUWfOAR3/8QQrAx6vI5gLVTbepbuniwOlrEBzq8xDyqM9jxFKfaeJ+ZXmpg0gVtzxJdmCY
+mva7RFFEz/c5WJrFBsGKcOzQKZrq2siZbTr665wRWzH0cE3TO/0+2NbF2kA360OPqb1yDwmW681d
+eA344AkoixvznKm/xJaN0+Nzb+3Z3lRFGgAxRGUpqlrvEE+9IDf6HCMWr4GvqzO4IEhwOO/YTHKc
+O36ZLZdPj30eNsU5MGRf9aNiUBdj4w+Y2irEC0drGpDg8Rr4tjHH4eo6JuZHGJkd/miF1uhvy9T5
+pNEba7HBYsRyMtOcutjYwfu5UQanX09a4cJinybRv25jS29q5XzD1cyb6cFxG2hf7FNbbMC/ARq7
+oxUfyjJx8OXLfSo7+Z9JyXr5I2wfSAAAAABJRU5ErkJggg==" title="Add note" />&nbsp;Show&nbsp;all</a>
+		<a href="#" onclick="$('#showAllLink').show();$('#currentNotes').show();$('#allNotes').hide();$(this).hide();" id="showCurrentLink"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
+U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAInSURBVDjLpZNBSJRBFMd/37papinFUgZm
+YESIFiGRYdQhynueig4eomNE0NmDidc8du7arUNFKJSpIKQHAwlNKkUzTVdd3W++mTfzOuxK2RoE
+zeENPHi//3/mvRepKv9z0gD65aVK7geqFhWHeoeKRSVBfQLO4MWgEoMz1HY+jXYDvFDecrOErgoR
+FAOgkH12q9RBsr5ApSoa4kI2AtUARCi/CFFqH+riPZ4gQrBLSG4MQoKqLdzBQjBoMGiIqcjcILj8
+HgCfAIIGA+qKRb8XGzTkQQW1eziQrdWC5V3KMSGYIiSGEBdEZLsUELzBzLxDkk/gLajgzSb7Txwp
+KAdDz8QUWfOAR3/8QQrAx6vI5gLVTbepbuniwOlrEBzq8xDyqM9jxFKfaeJ+ZXmpg0gVtzxJdmCY
+mva7RFFEz/c5WJrFBsGKcOzQKZrq2siZbTr665wRWzH0cE3TO/0+2NbF2kA360OPqb1yDwmW681d
+eA344AkoixvznKm/xJaN0+Nzb+3Z3lRFGgAxRGUpqlrvEE+9IDf6HCMWr4GvqzO4IEhwOO/YTHKc
+O36ZLZdPj30eNsU5MGRf9aNiUBdj4w+Y2irEC0drGpDg8Rr4tjHH4eo6JuZHGJkd/miF1uhvy9T5
+pNEba7HBYsRyMtOcutjYwfu5UQanX09a4cJinybRv25jS29q5XzD1cyb6cFxG2hf7FNbbMC/ARq7
+oxUfyjJx8OXLfSo7+Z9JyXr5I2wfSAAAAABJRU5ErkJggg==" title="Add note" />&nbsp;Show&nbsp;current</a>
+	</div>
+		
+	<div id="insertForm">
+	{widget insertForm}
+	</div>
+</div>
