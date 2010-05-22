@@ -47,7 +47,7 @@ class NotesPanelModel implements INotesPanelModel {
 			'database' => dirname(__FILE__) . '/notes-panel.sdb',
 		));
 
-		//$this->cache = Environment::getCache(self::CACHE_NAMESPACE);
+		$this->cache = Environment::getCache(self::CACHE_NAMESPACE);
 	}
 
 	/**
@@ -58,10 +58,8 @@ class NotesPanelModel implements INotesPanelModel {
 			'page_id' => $pageId,
 			'description' => $description,
 		))->execute();
-/*
-		$this->cache->clean(array(
-			Cache::ALL => TRUE,
-		));*/
+
+		$this->cleanCache($pageId);
 	}
 
 	/**
@@ -69,20 +67,18 @@ class NotesPanelModel implements INotesPanelModel {
 	 */
 	public function get($pageId = NULL) {
 		if (is_null($pageId)) {
-			/*
+			
 			if (!isset($this->cache['getAll'])) {
 				$this->cache['getAll'] = $this->db->select('id, description, page_id')->from('notes')->fetchAll();
 			}
 
-			return $this->cache['getAll'];*/
-			return $this->db->select('id, description, page_id')->from('notes')->fetchAll();
+			return $this->cache['getAll'];
 		} else {
-			/*if (!isset($this->cache['getCurrent'])) {
-				$this->cache['getCurrent'] = $this->db->select('id, description')->from('notes')->where('page_id LIKE %s', $pageId)->fetchAll();
-			}*/
+			if (!isset($this->cache['getCurrent-' . $pageId])) {
+				$this->cache['getCurrent-' . $pageId] = $this->db->select('id, description')->from('notes')->where('page_id LIKE %s', $pageId)->fetchAll();
+			}
 
-			//return $this->cache['getCurrent'];
-			return $this->db->select('id, description')->from('notes')->where('page_id LIKE %s', $pageId)->fetchAll();
+			return $this->cache['getCurrent-' . $pageId];
 		}
 	}
 
@@ -96,6 +92,7 @@ class NotesPanelModel implements INotesPanelModel {
 			$this->db->delete('notes')->where('id = %i', $noteId)->execute();
 		}
 
+		$this->cleanCache();
 	}
 
 	/**
@@ -104,20 +101,36 @@ class NotesPanelModel implements INotesPanelModel {
 	public function getCount($pageId = NULL) {
 		$fluent = $this->db->select('COUNT(*)')->from('notes');
 		
-		if (is_null($pageId)) {/*
+		if (is_null($pageId)) {
 			if (!isset($this->cache['getCountAll'])) {
 				$this->cache['getCountAll'] = $fluent->fetchSingle();
 			}
 
-			return $this->cache['getCountAll'];*/
-			return $fluent->fetchSingle();
-		} else {/*
-			if (!isset($this->cache['getCountCurrent'])) {
-				$this->cache['getCountCurrent'] = $fluent->where('page_id LIKE %s', $pageId)->fetchSingle();
+			return $this->cache['getCountAll'];
+		} else {
+			if (!isset($this->cache['getCountCurrent-' . $pageId])) {
+				$this->cache['getCountCurrent-' . $pageId] = $fluent->where('page_id LIKE %s', $pageId)->fetchSingle();
 			}
 
-			return $this->cache['getCountCurrent'];*/
-			return $fluent->where('page_id LIKE %s', $pageId)->fetchSingle();
+			return $this->cache['getCountCurrent-' . $pageId];
+		}
+	}
+
+	/**
+	 * Cleans cache.
+	 *
+	 * @param mixed $pageId
+	 */
+	private function cleanCache($pageId = NULL) {
+		if (is_null($pageId)) {
+			$this->cache->clean(array(
+				Cache::ALL => TRUE,
+			));
+		} else {
+			unset($this->cache['getAll']);
+			unset($this->cache['getCountAll']);
+			unset($this->cache['getCurrent-' . $pageId]);
+			unset($this->cache['getCountCurrent-' . $pageId]);
 		}
 	}
 
