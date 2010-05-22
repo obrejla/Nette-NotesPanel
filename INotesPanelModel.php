@@ -7,12 +7,13 @@
  */
 interface INotesPanelModel {
 
-	/**
-	 * Returns count of notes.
-	 *
-	 * @return int
-	 */
-	public function getCount();
+	public function add($pageId, $description);
+
+	public function get($pageId = NULL);
+
+	public function delete($noteId = NULL);
+
+	public function getCount($pageId = NULL);
 
 }
 

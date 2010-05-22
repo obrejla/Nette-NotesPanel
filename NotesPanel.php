@@ -5,42 +5,168 @@
  *
  * @author Ondřej Brejla
  */
-class NotesPanel extends Object implements IDebugPanel {
+class NotesPanel extends Control implements IDebugPanel {
 
 	/** @var INotesPanelModel */
 	private $model = NULL;
 
-	public function  __construct() {
-		$this->model = new NotesPanelModel();
+	/** @var IHttpRequest */
+	private $httpRequest = NULL;
+
+	/** @var Texy */
+	private $texy = NULL;
+
+	/**
+	 * Adds NotesPanel into DebugBar.
+	 */
+	public function register() {
+		Debug::addPanel($this);
 	}
 
+	/**
+	 * Factory for creation of insert form.
+	 *
+	 * @return AppForm
+	 */
+	public function createComponentInsertForm() {
+		$form = new AppForm();
+
+		$renderer = $form->getRenderer();
+		$renderer->wrappers['controls']['container'] = '';
+		$renderer->wrappers['pair']['container'] = 'div';
+		$renderer->wrappers['control']['container'] = '';
+		$renderer->wrappers['label']['container'] = 'div';
+
+		$form->addTextArea('description', 'Description:', 80, 3);
+		$form->addHidden('pageId');
+		$form->addSubmit('insert', 'Add note');
+
+		$form->setDefaults(array(
+			'pageId' => (string) $this->getHttpRequest()->getUri(),
+		));
+
+		$form->onSubmit[] = callback($this, 'insertFormSubmitted');
+
+		return $form;
+	}
+
+	/**
+	 * Insert form onSubmit[] callback.
+	 *
+	 * @param AppForm $form
+	 */
+	public function insertFormSubmitted(AppForm $form) {
+		$values = $form->getValues();
+
+		$this->getModel()->add($values['pageId'], $values['description']);
+
+		$this->redirect('this');
+	}
+
+	/**
+	 * Processing of delete signal.
+	 *
+	 * @param int $noteId
+	 */
+	public function handleDelete($noteId = NULL) {
+		$this->getModel()->delete($noteId);
+
+		$this->redirect('this');
+	}
+
+	/**
+	 * @see IDebugPanel#getId()
+	 */
 	public function getId() {
 		return __CLASS__;
 	}
 
+	/**
+	 * @see IDebugPanel#getPanel()
+	 */
 	public function getPanel() {
-		$template = new Template(dirname(__FILE__) . '/NotesPanel.phtml');
-		$template->registerFilter(new LatteFilter());
+		$template = $this->createTemplate();
+		$template->setFile(dirname(__FILE__) . '/NotesPanel.panel.phtml');
+
+		if (!is_null($this->texy)) {
+			$template->registerHelper('texy', callback($this->texy, 'process'));
+			$template->isTexy = TRUE;
+		} else {
+			$template->isTexy = FALSE;
+		}
+		
+		//$template->currentNotes = $this->getModel()->get((string) $this->getHttpRequest()->getUri());
+		//$template->allNotes = $this->getModel()->get();
+		$template->currentNotes = array(array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'));
+		$template->allNotes = array(array('id' => '1', 'description' => 'desc', 'page_id' => 'link'),);
 
 		return $template;
 	}
 
+	/**
+	 * @see IDebugPanel#getTab()
+	 */
 	public function getTab() {
-		$count = $this->model->getCount();
+		$template = $this->createTemplate();
+		$template->setFile(dirname(__FILE__) . '/NotesPanel.tab.phtml');
 
-		return '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
-U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAGGSURBVDjLxZO/alRBFMZ/c6MmomKhBLv4
-AIJiYekjCFopKSzyCnkGW99BbMTOQhsrBcFKsLCJhRYBNYYsWXNn5s6Z81nMGu+626XwFDOHge/P
-mfkmSOIk1XHCOvWn0ZdXsulPpAFZQbUgG5BlVDOURLWELEJJXLz3JMwTVOP0tfsLChIEmC2A4OD5
-g0UHebLLWQl5bAcBJAcC4i9D6FZRiUtGMMOHb9j0PXhGGtruA3hCnpBHzly+i5d+CUHNgCFPoDID
-jcEJeQ8yNCxxYL/2m+U55Yh7mpFE8NhE7GiRwGsi7bzF8meoA8io6ZC1jfWm7AnVCPLld1DjPna4
-y/kbm4Djw1emH56h2oN6VFNzIKOOCI6DFCTKj48cvN6m9jtQC64yAjcXrjrnoBu/94VbDymTPSZv
-Hs/A6RgsT0gZqC1M/46AJcJKx7mbW8RPL5m+e8HKpeusXbmNI1AFDHBkmZHzFpO9p3fkJSNLqEQs
-fgc6uhCQJRgy7qlF2ypXHynMEfy33/gbubc6XKsT2+MAAAAASUVORK5CYII=" />Notes (' . $count . ')';
+		$template->currentCount = $this->getModel()->getCount((string) $this->getHttpRequest()->getUri());
+		$template->allCount = $this->getModel()->getCount();
+
+		return $template;
 	}
 
+	/**
+	 * Sets model.
+	 *
+	 * @param INotesPanelModel $model
+	 */
 	public function setModel(INotesPanelModel $model) {
 		$this->model = $model;
+	}
+
+	/**
+	 * Returns model.
+	 *
+	 * @return INotesPanelModel
+	 */
+	public function getModel() {
+		if (is_null($this->model)) {
+			$this->model = new NotesPanelModel();
+		}
+
+		return $this->model;
+	}
+
+	/**
+	 * Sets http request.
+	 *
+	 * @param IHttpRequest $httpRequest
+	 */
+	public function setHttpRequest(IHttpRequest $httpRequest) {
+		$this->httpRequest = $httpRequest;
+	}
+
+	/**
+	 * Returns http request.
+	 *
+	 * @return IHttpRequest
+	 */
+	public function getHttpRequest() {
+		if (is_null($this->httpRequest)) {
+			throw new InvalidStateException('No HttpRequest. HttpRequest was not set.');
+		}
+
+		return $this->httpRequest;
+	}
+
+	/**
+	 * Sets Texy!.
+	 *
+	 * @param Texy $texy
+	 */
+	public function setTexy(Texy $texy) {
+		$this->texy = $texy;
 	}
 	
 }
