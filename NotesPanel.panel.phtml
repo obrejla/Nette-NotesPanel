@@ -35,7 +35,18 @@ $(document).ready(function() {
 
 <div id="notesPanel">
 	<h1>Notes</h1>
-
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
+U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAIJSURBVDjLpZM9SJVRGMd/532vetOswQgj
+SoW2gj4Gh4ZoiIKGwGi4EtQQ0VxLQhAOEW2NzUVLOQRBBioUakGT5CBiGhZe8aameLv3nPc9H0/D
+vX7hHQSf4ZzDgf/v/3/O4VEiwl4qYo+VWT/I7EdxxSVEUsRZxFvEpYhLEJ+ANXhnEKfBGg5ef6W2
+A7yj7lRuh4MIKKgugMBKX/fOBMlqnn0iSNCVCwUiAVAImwQVNSBW12jBOUK6gCt+g5Agklb2kEIw
+SDBI0NQf6iLYcg2ATwCHBANiq6KtYoOEMohD0hoJ3L/lSuRtzpoQTBWiIeiKiSvtBARvMD9GcMk0
++BTE4c0a2bbDFedgEK9BQu038HoZt5Zn/5mbQCCkvyiOvUF8GaRMYXiawvAk5fm3RI2K7/2ZnssD
+7tkGQIlg/4yzMjTKgfN3UUoRxG6IS1OWs7mHNHScRI8PMDEy+GTwUl0p2vrfzZ23sauLrA4/r4oN
+4g1zQ2OcuHiD7Mxn1MtuGn++o72tJRYl9zcS4Awqjmg6dwc90U/x63viltNkWy9gl/rItnbA1Qeb
+vfceIQ6qXa0P0+LraxJsgjiDWI3TBSAiUoqpT3N0dt2i6fcHEr1AGSiuxUzOkFe7mcbR3NHe+uam
+R8daXCYTzVFcdMwWYm+NPFa7HecvueM9pb/z92Kv2nwseYEXVwbc0/9TqFA0aM0H7QAAAABJRU5E
+rkJggg==" title="Delete note" />
 		<div id="currentNotes">
 		{if count($currentNotes)}
 		<table>
@@ -49,18 +60,7 @@ $(document).ready(function() {
 				{foreach $currentNotes as $note}
 				<tr>
 					<td>{if $isTexy}{!$note['description']|texy}{else}{!$note['description']}{/if}</td>
-					<td><a href="{link delete! $note['id']}" onclick="javascript:if (confirm('Are you sure you want to delete this note?')) { this.submit(); } else { return false; }"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
-U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAIJSURBVDjLpZM9SJVRGMd/532vetOswQgj
-SoW2gj4Gh4ZoiIKGwGi4EtQQ0VxLQhAOEW2NzUVLOQRBBioUakGT5CBiGhZe8aameLv3nPc9H0/D
-vX7hHQSf4ZzDgf/v/3/O4VEiwl4qYo+VWT/I7EdxxSVEUsRZxFvEpYhLEJ+ANXhnEKfBGg5ef6W2
-A7yj7lRuh4MIKKgugMBKX/fOBMlqnn0iSNCVCwUiAVAImwQVNSBW12jBOUK6gCt+g5Agklb2kEIw
-SDBI0NQf6iLYcg2ATwCHBANiq6KtYoOEMohD0hoJ3L/lSuRtzpoQTBWiIeiKiSvtBARvMD9GcMk0
-+BTE4c0a2bbDFedgEK9BQu038HoZt5Zn/5mbQCCkvyiOvUF8GaRMYXiawvAk5fm3RI2K7/2ZnssD
-7tkGQIlg/4yzMjTKgfN3UUoRxG6IS1OWs7mHNHScRI8PMDEy+GTwUl0p2vrfzZ23sauLrA4/r4oN
-4g1zQ2OcuHiD7Mxn1MtuGn++o72tJRYl9zcS4Awqjmg6dwc90U/x63viltNkWy9gl/rItnbA1Qeb
-vfceIQ6qXa0P0+LraxJsgjiDWI3TBSAiUoqpT3N0dt2i6fcHEr1AGSiuxUzOkFe7mcbR3NHe+uam
-R8daXCYTzVFcdMwWYm+NPFa7HecvueM9pb/z92Kv2nwseYEXVwbc0/9TqFA0aM0H7QAAAABJRU5E
-rkJggg==" title="Delete note" />&nbsp;Delete</a></td>
+					<td><a href="{link delete! $note['id']}" onclick="javascript:if (confirm('Are you sure you want to delete this note?')) { this.submit(); } else { return false; }">Delete</a></td>
 				</tr>
 				{/foreach}
 			</tbody>
@@ -103,18 +103,7 @@ rkJggg==" title="Delete note" />&nbsp;Delete</a></td>
 				<tr>
 					<td><a href="{$note['page_id']}" title="{$note['page_id']}">link</a></td>
 					<td>{if $isTexy}{!$note['description']|texy}{else}{!$note['description']}{/if}</td>
-					<td><a href="{link delete! $note['id']}" onclick="javascript:if (confirm('Are you sure you want to delete this note?')) { this.submit(); } else { return false; }"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAAK/INwWK6QAAABl0RVh0
-U29mdHdhcmUAQWRvYmUgSW1hZ2VSZWFkeXHJZTwAAAIJSURBVDjLpZM9SJVRGMd/532vetOswQgj
-SoW2gj4Gh4ZoiIKGwGi4EtQQ0VxLQhAOEW2NzUVLOQRBBioUakGT5CBiGhZe8aameLv3nPc9H0/D
-vX7hHQSf4ZzDgf/v/3/O4VEiwl4qYo+VWT/I7EdxxSVEUsRZxFvEpYhLEJ+ANXhnEKfBGg5ef6W2
-A7yj7lRuh4MIKKgugMBKX/fOBMlqnn0iSNCVCwUiAVAImwQVNSBW12jBOUK6gCt+g5Agklb2kEIw
-SDBI0NQf6iLYcg2ATwCHBANiq6KtYoOEMohD0hoJ3L/lSuRtzpoQTBWiIeiKiSvtBARvMD9GcMk0
-+BTE4c0a2bbDFedgEK9BQu038HoZt5Zn/5mbQCCkvyiOvUF8GaRMYXiawvAk5fm3RI2K7/2ZnssD
-7tkGQIlg/4yzMjTKgfN3UUoRxG6IS1OWs7mHNHScRI8PMDEy+GTwUl0p2vrfzZ23sauLrA4/r4oN
-4g1zQ2OcuHiD7Mxn1MtuGn++o72tJRYl9zcS4Awqjmg6dwc90U/x63viltNkWy9gl/rItnbA1Qeb
-vfceIQ6qXa0P0+LraxJsgjiDWI3TBSAiUoqpT3N0dt2i6fcHEr1AGSiuxUzOkFe7mcbR3NHe+uam
-R8daXCYTzVFcdMwWYm+NPFa7HecvueM9pb/z92Kv2nwseYEXVwbc0/9TqFA0aM0H7QAAAABJRU5E
-rkJggg==" title="Delete note" />&nbsp;Delete</a></td>
+					<td><a href="{link delete! $note['id']}" onclick="javascript:if (confirm('Are you sure you want to delete this note?')) { this.submit(); } else { return false; }">Delete</a></td>
 				</tr>
 				{/foreach}
 			</tbody>

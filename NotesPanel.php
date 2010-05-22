@@ -95,10 +95,8 @@ class NotesPanel extends Control implements IDebugPanel {
 			$template->isTexy = FALSE;
 		}
 		
-		//$template->currentNotes = $this->getModel()->get((string) $this->getHttpRequest()->getUri());
-		//$template->allNotes = $this->getModel()->get();
-		$template->currentNotes = array(array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'),array('id' => '1', 'description' => 'desc'));
-		$template->allNotes = array(array('id' => '1', 'description' => 'desc', 'page_id' => 'link'),);
+		$template->currentNotes = $this->getModel()->get((string) $this->getHttpRequest()->getUri());
+		$template->allNotes = $this->getModel()->get();
 
 		return $template;
 	}
