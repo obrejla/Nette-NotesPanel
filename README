@@ -9,8 +9,8 @@ Nette Framework DebugBar panel for adding notes to currently displayed web site.
 Requirements
 ------------
 
-- Nette Framework 1.0-alpha
-- PHP 5.2.0 or higher
+- Nette Framework 1.0-alpha for PHP 5.3
+- PHP 5.3.0 or higher
 - jQuery 1.4
 
 The default implementation of the model uses:
@@ -26,6 +26,10 @@ Using default implementation.
 - Don't forget to set the 'notes-panel.sdb' file for writing!
 
 - Then in BasePresenter.
+
+use Nette\Application\Presenter;
+use OndrejBrejla\Nette\Addons\NotesPanel\NotesPanel;
+/*use Texy;*/
 
 class BasePresenter extends Presenter {
 

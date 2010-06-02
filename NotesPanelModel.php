@@ -25,12 +25,19 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+namespace OndrejBrejla\Nette\Addons\NotesPanel;
+
+use DibiConnection;
+use Nette\Object;
+use Nette\Environment;
+use Nette\Caching\Cache;
+
 /**
  * Model for the NotesPanel.
  *
  * @author Ondřej Brejla <ondrej@brejla.cz>
  */
-class NotesPanelModel implements INotesPanelModel {
+class NotesPanelModel extends Object implements INotesPanelModel {
 
 	/** @var string */
 	const CACHE_NAMESPACE = 'NotesPanel';
@@ -38,7 +45,7 @@ class NotesPanelModel implements INotesPanelModel {
 	/** @var DibiConnection */
 	private $db = NULL;
 
-	/** @var Cache */
+	/** @var Nette\Caching\Cache */
 	private $cache = NULL;
 
 	public function __construct() {
@@ -51,7 +58,7 @@ class NotesPanelModel implements INotesPanelModel {
 	}
 
 	/**
-	 * @see INotesPanelModel::add($pageId, $description)
+	 * @see OndrejBrejla\Nette\Addons\NotesPanel\INotesPanelModel::add($pageId, $description)
 	 */
 	public function add($pageId, $description) {
 		$this->db->insert('notes', array(
@@ -63,7 +70,7 @@ class NotesPanelModel implements INotesPanelModel {
 	}
 
 	/**
-	 * @see INotesPanelModel::get($pageId)
+	 * @see OndrejBrejla\Nette\Addons\NotesPanel\INotesPanelModel::get($pageId)
 	 */
 	public function get($pageId = NULL) {
 		if (is_null($pageId)) {
@@ -83,7 +90,7 @@ class NotesPanelModel implements INotesPanelModel {
 	}
 
 	/**
-	 * @see INotesPanelModel::delete($noteId)
+	 * @see OndrejBrejla\Nette\Addons\NotesPanel\INotesPanelModel::delete($noteId)
 	 */
 	public function delete($noteId = NULL) {
 		if (is_null($noteId)) {
@@ -96,7 +103,7 @@ class NotesPanelModel implements INotesPanelModel {
 	}
 
 	/**
-	 * @see INotesPanelModel::getCount($pageId)
+	 * @see OndrejBrejla\Nette\Addons\NotesPanel\INotesPanelModel::getCount($pageId)
 	 */
 	public function getCount($pageId = NULL) {
 		$fluent = $this->db->select('COUNT(*)')->from('notes');

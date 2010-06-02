@@ -25,6 +25,17 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+namespace OndrejBrejla\Nette\Addons\NotesPanel;
+
+use Texy;
+use Nette\Debug;
+use Nette\IDebugPanel;
+use Nette\Web\IHttpRequest;
+use Nette\Application\Control;
+use Nette\Application\AppForm;
+use OndrejBrejla\Nette\Addons\NotesPanel\NotesPanelModel;
+use OndrejBrejla\Nette\Addons\NotesPanel\INotesPanelModel;
+
 /**
  * Panel for the Nette DebugBar. It allows you to write notes for each site of your web pages.
  *
@@ -32,10 +43,10 @@
  */
 class NotesPanel extends Control implements IDebugPanel {
 
-	/** @var INotesPanelModel */
+	/** @var OndrejBrejla\Nette\Addons\NotesPanel\INotesPanelModel */
 	private $model = NULL;
 
-	/** @var IHttpRequest */
+	/** @var Nette\Web\IHttpRequest */
 	private $httpRequest = NULL;
 
 	/** @var Texy */
@@ -51,7 +62,7 @@ class NotesPanel extends Control implements IDebugPanel {
 	/**
 	 * Factory for creation of insert form.
 	 *
-	 * @return AppForm
+	 * @return Nette\Application\AppForm
 	 */
 	public function createComponentInsertForm() {
 		$form = new AppForm();
@@ -78,7 +89,7 @@ class NotesPanel extends Control implements IDebugPanel {
 	/**
 	 * Insert form onSubmit[] callback.
 	 *
-	 * @param AppForm $form
+	 * @param Nette\Application\AppForm $form
 	 */
 	public function insertFormSubmitted(AppForm $form) {
 		$values = $form->getValues();
@@ -100,14 +111,14 @@ class NotesPanel extends Control implements IDebugPanel {
 	}
 
 	/**
-	 * @see IDebugPanel::getId()
+	 * @see Nette\IDebugPanel::getId()
 	 */
 	public function getId() {
 		return __CLASS__;
 	}
 
 	/**
-	 * @see IDebugPanel::getPanel()
+	 * @see Nette\IDebugPanel::getPanel()
 	 */
 	public function getPanel() {
 		$template = $this->createTemplate();
@@ -127,7 +138,7 @@ class NotesPanel extends Control implements IDebugPanel {
 	}
 
 	/**
-	 * @see IDebugPanel::getTab()
+	 * @see Nette\IDebugPanel::getTab()
 	 */
 	public function getTab() {
 		$template = $this->createTemplate();
@@ -142,7 +153,7 @@ class NotesPanel extends Control implements IDebugPanel {
 	/**
 	 * Sets model.
 	 *
-	 * @param INotesPanelModel $model
+	 * @param OndrejBrejla\Nette\Addons\NotesPanel\INotesPanelModel $model
 	 */
 	public function setModel(INotesPanelModel $model) {
 		$this->model = $model;
@@ -151,7 +162,7 @@ class NotesPanel extends Control implements IDebugPanel {
 	/**
 	 * Returns model.
 	 *
-	 * @return INotesPanelModel
+	 * @return OndrejBrejla\Nette\Addons\NotesPanel\INotesPanelModel
 	 */
 	private function getModel() {
 		if (is_null($this->model)) {
@@ -164,7 +175,7 @@ class NotesPanel extends Control implements IDebugPanel {
 	/**
 	 * Sets http request.
 	 *
-	 * @param IHttpRequest $httpRequest
+	 * @param Nette\Web\IHttpRequest $httpRequest
 	 */
 	public function setHttpRequest(IHttpRequest $httpRequest) {
 		$this->httpRequest = $httpRequest;
@@ -173,7 +184,7 @@ class NotesPanel extends Control implements IDebugPanel {
 	/**
 	 * Returns http request.
 	 *
-	 * @return IHttpRequest
+	 * @return Nette\Web\IHttpRequest
 	 */
 	private function getHttpRequest() {
 		if (is_null($this->httpRequest)) {

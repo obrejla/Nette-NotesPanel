@@ -25,6 +25,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
+namespace OndrejBrejla\Nette\Addons\NotesPanel;
+
 /**
  * Interface for the NotesPanel models.
  *
