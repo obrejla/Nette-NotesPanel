@@ -1,0 +1,46 @@
+NotesPanel, Copyright (c) 2010 Ondřej Brejla <ondrej@brejla.cz>
+===============================================================
+
+Introduction
+------------
+
+Nette Framework DebugBar panel for adding notes to currently displayed web site.
+
+Requirements
+------------
+
+- Nette Framework 1.0-alpha
+- PHP 5.2.0 or higher
+- jQuery
+
+The default implementation of the model uses:
+
+- SQLite 3.0
+- Dibi 1.3-dev
+
+Examples
+--------
+
+Using default implementation.
+
+- Don't forget to set the 'notes-panel.sdb' file for writing!
+
+- Then in BasePresenter.
+
+class BasePresenter extends Presenter {
+
+    public function startup() {
+		parent::startup();
+		$this['notesPanel']->register();
+	}
+
+	public function createComponentNotesPanel() {
+		$np = new NotesPanel();
+		$np->setHttpRequest($this->getHttpRequest());
+		// You can set a Texy to interpret the data from the database by Texy!
+		// $np->setTexy(new Texy());
+
+		return $np;
+	}
+
+}
