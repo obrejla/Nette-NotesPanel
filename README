@@ -11,7 +11,7 @@ Requirements
 
 - Nette Framework 1.0-alpha
 - PHP 5.2.0 or higher
-- jQuery
+- jQuery 1.4
 
 The default implementation of the model uses:
 
