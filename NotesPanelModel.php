@@ -28,6 +28,7 @@
 namespace OndrejBrejla\Nette\Addons\NotesPanel;
 
 use DibiConnection;
+use Nette\Object;
 use Nette\Environment;
 use Nette\Caching\Cache;
 
@@ -36,7 +37,7 @@ use Nette\Caching\Cache;
  *
  * @author Ondřej Brejla <ondrej@brejla.cz>
  */
-class NotesPanelModel implements INotesPanelModel {
+class NotesPanelModel extends Object implements INotesPanelModel {
 
 	/** @var string */
 	const CACHE_NAMESPACE = 'NotesPanel';
